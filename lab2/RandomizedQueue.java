@@ -68,7 +68,9 @@ public class RandomizedQueue<Item> implements Iterable<Item>{
         return result;
     }
     
-    public Iterator<Item> iterator() {return new RandomQueueIterator();}
+    public Iterator<Item> iterator() {
+        return new RandomQueueIterator();
+    }
     
     private class RandomQueueIterator implements Iterator<Item>
     {
@@ -85,20 +87,22 @@ public class RandomizedQueue<Item> implements Iterable<Item>{
         public void remove() {throw new java.lang.UnsupportedOperationException();}
         
         public RandomQueueIterator(){
-            if(size == 0)
-               throw new java.util.NoSuchElementException();
-            Node oldCopy;
-            copy = new Node();
-            copy.item = current.item;
-            current = current.next;
-            copyFirst = copy;
-            for(int i = 1; i<N;i++){
-                oldCopy = copy;
+            try{
+                Node oldCopy;
                 copy = new Node();
                 copy.item = current.item;
-                oldCopy.next = copy;
                 current = current.next;
+                copyFirst = copy;
+                for(int i = 1; i<N;i++){
+                    oldCopy = copy;
+                    copy = new Node();
+                    copy.item = current.item;
+                    oldCopy.next = copy;
+                    current = current.next;
+                }
             }
+            catch (Exception e){}
+            finally{}
         }
         
         public Item next() 
@@ -126,15 +130,18 @@ public class RandomizedQueue<Item> implements Iterable<Item>{
       
     public static void main(String[] arg){
         RandomizedQueue<Integer>test = new RandomizedQueue<Integer>();
-        for(int i = 0; i<5 ; i++)
-           test.enqueue(null);
+//        for(int i = 0; i<5 ; i++)
+//           test.enqueue(i);
         
-        for(int i : test)
-            StdOut.print(i+" ");
-        StdOut.println();
-        StdOut.println(test.dequeue());
-        for(int i : test)
-            StdOut.print(i+" ");
+        Iterator<Integer> s = test.iterator();
+        while(s.hasNext() == true){
+            int i = s.next();
+            StdOut.println(i);
+        }
+//        StdOut.println();
+//        StdOut.println(test.dequeue());
+//        for(int i : test)
+//            StdOut.print(i+" ");
 
     }
 }

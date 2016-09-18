@@ -52,6 +52,8 @@ public class RandomizedQueue<Item> implements Iterable<Item>{
     }
     
     public Item sample(){
+        if (isEmpty() == true)
+            throw new java.util.NoSuchElementException();
         Item result;
         int randNum;
         Node randNode = first;
@@ -70,22 +72,58 @@ public class RandomizedQueue<Item> implements Iterable<Item>{
     
     private class RandomQueueIterator implements Iterator<Item>
     {
-        private Node current = first;
-        public boolean hasNext() {return current !=null; }
+        Node current = first;
+        Node copy;
+        Node copyFirst;
+        int delNodeNum1;
+        Node delNode1;
+        Node prevNode1;
+        Item result;
+        int size = N;
+        public boolean hasNext() {return size != 0; }
+        
         public void remove() {throw new java.lang.UnsupportedOperationException();}
+        
+        public RandomQueueIterator(){
+            copy = new Node();
+            copy.item = current.item;
+            copy.next = current.next;
+            current = current.next;
+            copyFirst = copy;
+            for(int i = 1; i<N;i++){
+                copy = new Node();
+                copy.item = current.item;
+                copy.next = current.next;
+                current = current.next;
+            }
+        }
+        
         public Item next() 
         {
             if(hasNext() == false)
                 throw new java.util.NoSuchElementException();
-            Item item = current.item;
-            current  = current.next;
-            return item;
+            prevNode1 = copyFirst;
+            delNode1 = copyFirst;
+            delNodeNum1 = StdRandom.uniform(size);
+            if(delNodeNum1 != 0){
+                for(int i = 0; i<delNodeNum1-1; i++)
+                    prevNode1 = prevNode1.next;
+                delNode1 = prevNode1.next;
+                result = delNode1.item;
+                prevNode1.next = delNode1.next;
+            }
+            else{
+                result = copyFirst.item;
+                copyFirst = copyFirst.next;
+            }
+            size--;
+            return result;
         }    
     }
       
     public static void main(String[] arg){
         RandomizedQueue<Integer>test = new RandomizedQueue<Integer>();
-        for(int i = 0; i<10 ; i++)
+        for(int i = 0; i<5 ; i++)
             test.enqueue(i);
         
         for(int i : test)
@@ -95,4 +133,4 @@ public class RandomizedQueue<Item> implements Iterable<Item>{
         for(int i : test)
             StdOut.print(i+" ");
     }
-    }
+}

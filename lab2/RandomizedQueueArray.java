@@ -1,5 +1,6 @@
 import edu.princeton.cs.algs4.StdRandom;
 import java.util.Iterator;
+import edu.princeton.cs.algs4.StdOut;
 public class RandomizedQueueArray<Item> implements Iterable<Item>
 {
     private int N = 0;
@@ -55,5 +56,18 @@ public class RandomizedQueueArray<Item> implements Iterable<Item>
             current--;
             return item;
         }    
+    }
+    
+    public static void main(String[] arg){
+        RandomizedQueue<Integer>test = new RandomizedQueue<Integer>();
+        for(int i = 0; i<10 ; i++)
+            test.enqueue(i);
+        
+        for(int i : test)
+            StdOut.print(i+" ");
+        StdOut.println();
+        StdOut.println(test.dequeue());
+        for(int i : test)
+            StdOut.print(i+" ");
     }
 }

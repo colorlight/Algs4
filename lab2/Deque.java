@@ -10,6 +10,7 @@ public class Deque<Item> implements Iterable<Item>
     {
         Item item;
         Node next;
+        Node prev;
     }
     
     public void addFirst(Item item)
@@ -20,18 +21,20 @@ public class Deque<Item> implements Iterable<Item>
         first = new Node();
         first.item = item;
         first.next = oldFirst;
-        N++;
+        if(N++ !=0) oldFirst.prev = first;
+        if(N == 1) last = first;
     }
     
     public void addLast(Item item)
     {
         if(item == null)
             throw new java.lang.NullPointerException();
+
         Node oldLast = last;
         last = new Node();
         last.item = item;
-        last.next = oldLast;
-        N++;
+        last.prev = oldLast;
+        if(N++ != 0) oldLast.next = last;
     }
     
     public int size()
@@ -45,7 +48,11 @@ public class Deque<Item> implements Iterable<Item>
         if (isEmpty() == true)
             throw new java.util.NoSuchElementException();
         Item item = first.item;
-        first = first.next;
+        if(N-- != 1) {
+            first = first.next;
+            first.prev = null;
+        }
+        else{first = last = null;}
         return item;
     }
     
@@ -54,7 +61,11 @@ public class Deque<Item> implements Iterable<Item>
         if (isEmpty() == true)
             throw new java.util.NoSuchElementException();
         Item item = last.item;
-        last = last.next;
+        if(N-- != 1){
+            last = last.prev;
+            last.next = null;
+        }
+        else{first = last = null;}
         return item;
     }
     
@@ -78,13 +89,13 @@ public class Deque<Item> implements Iterable<Item>
     public static void main(String[] args)
     {
         Deque<Integer> test = new Deque<Integer>();
-        for(int i = 0; i<3; i++)
+       for(int i = 0; i<6; i++)
             test.addFirst(i);
-
+        test.removeLast();
         for(int i:test)
             StdOut.println(i);
        // test.addLast(null);
-        StdOut.println(test.size());
+       // StdOut.println(test.size());
     }
     
 }

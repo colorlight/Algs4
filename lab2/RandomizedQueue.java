@@ -85,6 +85,8 @@ public class RandomizedQueue<Item> implements Iterable<Item>{
         public void remove() {throw new java.lang.UnsupportedOperationException();}
         
         public RandomQueueIterator(){
+            if(size == 0)
+               throw new java.util.NoSuchElementException();
             Node oldCopy;
             copy = new Node();
             copy.item = current.item;
@@ -125,7 +127,7 @@ public class RandomizedQueue<Item> implements Iterable<Item>{
     public static void main(String[] arg){
         RandomizedQueue<Integer>test = new RandomizedQueue<Integer>();
         for(int i = 0; i<5 ; i++)
-            test.enqueue(i);
+           test.enqueue(null);
         
         for(int i : test)
             StdOut.print(i+" ");

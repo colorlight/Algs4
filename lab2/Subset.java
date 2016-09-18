@@ -11,7 +11,6 @@ public class Subset{
         inArray = StdIn.readAllStrings();
         for(int i = 0; i<inArray.length; i++)
             test.enqueue(inArray[i]);
-        StdOut.println("N :" + inArray.length);
    
         for(int i = 0; i<k; i++){
             output = test.dequeue();

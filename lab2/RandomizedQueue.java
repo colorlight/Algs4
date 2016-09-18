@@ -34,7 +34,7 @@ public class RandomizedQueue<Item> implements Iterable<Item>{
         Node prevNode = first;
         Item result;
         delNodeNum = StdRandom.uniform(N);
-        
+
         if(delNodeNum != 0){
             for(int i = 0; i<delNodeNum-1; i++){
                 prevNode = prevNode.next;
@@ -72,28 +72,29 @@ public class RandomizedQueue<Item> implements Iterable<Item>{
     
     private class RandomQueueIterator implements Iterator<Item>
     {
-        Node current = first;
-        Node copy;
-        Node copyFirst;
-        int delNodeNum1;
-        Node delNode1;
-        Node prevNode1;
-        Item result;
-        int size = N;
+        private Node current = first;
+        private Node copy;
+        private Node copyFirst;
+        private int delNodeNum1;
+        private Node delNode1;
+        private Node prevNode1;
+        private Item result;
+        private int size = N;
         public boolean hasNext() {return size != 0; }
         
         public void remove() {throw new java.lang.UnsupportedOperationException();}
         
         public RandomQueueIterator(){
+            Node oldCopy;
             copy = new Node();
             copy.item = current.item;
-            copy.next = current.next;
             current = current.next;
             copyFirst = copy;
             for(int i = 1; i<N;i++){
+                oldCopy = copy;
                 copy = new Node();
                 copy.item = current.item;
-                copy.next = current.next;
+                oldCopy.next = copy;
                 current = current.next;
             }
         }
@@ -132,5 +133,6 @@ public class RandomizedQueue<Item> implements Iterable<Item>{
         StdOut.println(test.dequeue());
         for(int i : test)
             StdOut.print(i+" ");
+
     }
 }

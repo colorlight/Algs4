@@ -29,6 +29,7 @@ public class Deque<Item> implements Iterable<Item>
     {
         if(item == null)
             throw new java.lang.NullPointerException();
+
         Node oldLast = last;
         last = new Node();
         last.item = item;
@@ -91,22 +92,14 @@ public class Deque<Item> implements Iterable<Item>
         Deque<Integer> test = new Deque<Integer>();
 //       for(int i = 0; i<6; i++)
 //            test.addFirst(i);
-        Iterator<Integer> s = test.iterator();
-        while(s.hasNext() == true){
-            int i = s.next();
-            StdOut.println(i);
-        }
         test.addLast(0);
-//        for(int i : test)
-//            StdOut.println(i);
-//        test.addLast(0);
-//        StdOut.println(test.size());
-//        test.addLast(2);
-//        test.addLast(3);
-//        test.addFirst(4);
-//        test.removeLast();
-//        for(int i:test)
-//            StdOut.println(i);
+        StdOut.println(test.size());
+        test.addLast(2);
+        test.addLast(3);
+        test.addFirst(4);
+        test.removeLast();
+        for(int i:test)
+            StdOut.println(i);
        // test.addLast(null);
        // StdOut.println(test.size());
     }

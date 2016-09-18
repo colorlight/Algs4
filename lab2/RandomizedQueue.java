@@ -4,134 +4,132 @@ import edu.princeton.cs.algs4.StdOut;
 
 public class RandomizedQueue<Item> implements Iterable<Item>{
     private Node first = null;
+    private Node last = null;
     private int N = 0;
-   
-    public RandomizedQueue(){}
-   
+    
+    public RandomizedQueue() {}
+    
     private class Node{
         Item item;
         Node next;
+        Node prev;
     }
-    public boolean isEmpty(){return first == null;}
     
-    public int size() {return N;}
-    
-    public void enqueue(Item item){
+    private void addFirst(Item item)
+    {
         if(item == null)
             throw new java.lang.NullPointerException();
         Node oldFirst = first;
         first = new Node();
         first.item = item;
         first.next = oldFirst;
-        N++;
-    }
+        if(N++ !=0) oldFirst.prev = first;
+        if(N == 1) last = first;
+      }
+      
+      private void addLast(Item item)
+      {
+        if(item == null)
+            throw new java.lang.NullPointerException();
+        Node oldLast = last;
+        last = new Node();
+        last.item = item;
+        last.prev = oldLast;
+        if(N++ != 0) oldLast.next = last;
+        if(N == 1) first = last;
+      }
+      
+      public int size()
+      {return N;}
     
-    public Item dequeue(){
+      public boolean isEmpty()
+      {return N == 0;}
+    
+      private Item removeFirst()
+      {
         if (isEmpty() == true)
             throw new java.util.NoSuchElementException();
-        int delNodeNum;
-        Node delNode = first;
-        Node prevNode = first;
-        Item result;
-        delNodeNum = StdRandom.uniform(N);
-
-        if(delNodeNum != 0){
-            for(int i = 0; i<delNodeNum-1; i++){
-                prevNode = prevNode.next;
-            }
-            delNode = prevNode.next;
-            result = delNode.item;
-            prevNode.next = delNode.next;
-        }
-        else{
-            result = first.item;
+        Item item = first.item;
+        if(N-- != 1) {
             first = first.next;
+            first.prev = null;
         }
-        N--;
-        return result;
+        else{first = last = null;}
+        return item;
+      }
+    
+      private Item removeLast()
+      {
+          if (isEmpty() == true)
+              throw new java.util.NoSuchElementException();
+          Item item = last.item;
+          if(N-- != 1){
+              last = last.prev;
+              last.next = null;
+          }
+          else{first = last = null;}
+          return item;
+      }
+    
+      public void enqueue(Item item){
+          if(item == null)
+              throw new java.lang.NullPointerException();
+          if(StdRandom.bernoulli() == true)
+          {this.addFirst(item);}
+          else
+          {this.addLast(item);}
     }
     
-    public Item sample(){
-        if (isEmpty() == true)
-            throw new java.util.NoSuchElementException();
-        Item result;
-        int randNum;
-        Node randNode = first;
-                
-        randNum = StdRandom.uniform(N);
-        
-        for(int i = 0; i<randNum; i++){
-            randNode = randNode.next;
-        }
-        
-        result = randNode.item;
-        return result;
-    }
+      public Item dequeue(){
+          if (isEmpty() == true)
+              throw new java.util.NoSuchElementException();
+          Item result;
+          if(StdRandom.bernoulli() == true)
+          {result = this.removeFirst();}
+          else
+          {result = this.removeLast();}
+          return result;
+      }
     
-    public Iterator<Item> iterator() {
-        return new RandomQueueIterator();
+      private Item readLast(){
+          
+      }
+      public Item sample(){
+          if (isEmpty() == true)
+              throw new java.util.NoSuchElementException();
+          Item result;
+          if(StdRandom.bernoulli() == true)
+          {result = randDeque.readFirst();}
+          else
+          {result = randDeque.readLast();}
+          return result;
+      }
+    
+      public Iterator<Item> iterator() {
+          return new RandomQueueIterator();
     }
     
     private class RandomQueueIterator implements Iterator<Item>
     {
-        private Node current = first;
-        private Node copy;
-        private Node copyFirst;
-        private int delNodeNum1;
-        private Node delNode1;
-        private Node prevNode1;
-        private Item result;
-        private int size = N;
+
         public boolean hasNext() {return size != 0; }
         
         public void remove() {throw new java.lang.UnsupportedOperationException();}
         
         public RandomQueueIterator(){
-            try{
-                Node oldCopy;
-                copy = new Node();
-                copy.item = current.item;
-                current = current.next;
-                copyFirst = copy;
-                for(int i = 1; i<N;i++){
-                    oldCopy = copy;
-                    copy = new Node();
-                    copy.item = current.item;
-                    oldCopy.next = copy;
-                    current = current.next;
-                }
-            }
-            catch (Exception e){}
-            finally{}
+
         }
         
         public Item next() 
         {
-            if(hasNext() == false)
-                throw new java.util.NoSuchElementException();
-            prevNode1 = copyFirst;
-            delNode1 = copyFirst;
-            delNodeNum1 = StdRandom.uniform(size);
-            if(delNodeNum1 != 0){
-                for(int i = 0; i<delNodeNum1-1; i++)
-                    prevNode1 = prevNode1.next;
-                delNode1 = prevNode1.next;
-                result = delNode1.item;
-                prevNode1.next = delNode1.next;
-            }
-            else{
-                result = copyFirst.item;
-                copyFirst = copyFirst.next;
-            }
-            size--;
-            return result;
+         
         }    
     }
       
     public static void main(String[] arg){
         RandomizedQueue<Integer>test = new RandomizedQueue<Integer>();
-//        for(int i = 0; i<5 ; i++)
-//           test.enqueue(i);
+        for(int i = 0; i<5 ; i++)
+           test.enqueue(i);
         
         Iterator<Integer> s = test.iterator();
         while(s.hasNext() == true){

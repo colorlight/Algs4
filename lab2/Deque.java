@@ -35,6 +35,7 @@ public class Deque<Item> implements Iterable<Item>
         last.item = item;
         last.prev = oldLast;
         if(N++ != 0) oldLast.next = last;
+        if(N == 1) first = last;
     }
     
     public int size()
@@ -89,8 +90,13 @@ public class Deque<Item> implements Iterable<Item>
     public static void main(String[] args)
     {
         Deque<Integer> test = new Deque<Integer>();
-       for(int i = 0; i<6; i++)
-            test.addFirst(i);
+//       for(int i = 0; i<6; i++)
+//            test.addFirst(i);
+        test.addLast(0);
+        StdOut.println(test.size());
+        test.addLast(2);
+        test.addLast(3);
+        test.addFirst(4);
         test.removeLast();
         for(int i:test)
             StdOut.println(i);

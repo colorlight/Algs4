@@ -136,11 +136,12 @@ public class Point implements Comparable<Point> {
      */
     public static void main(String[] args) {
         /* YOUR CODE HERE */
-    
+    	FastCollinearPoints fastLines;
+    	final int haha = 6;
         while(true){
-	    	Point[] p = new Point[6];
+	    	Point[] p = new Point[haha];
 	    	BruteCollinearPoints lines;
-	    	for(int i = 0; i<6; i++)
+	    	for(int i = 0; i<haha; i++)
 	    	{
 	    		int x = StdIn.readInt();
 	    		int y = StdIn.readInt();
@@ -163,13 +164,18 @@ public class Point implements Comparable<Point> {
 	//        if(result < 0) StdOut.println("p0-p1 < p0-p2");
 	//        else StdOut.println("p0-p1 > p0-p2");
 	    	lines = new BruteCollinearPoints(p);
-	    	StdOut.print("line segments:");
 			for(LineSegment test : lines.segments())
 			{
 				StdOut.println(test);
 			}
-        }
-            
+	    	
+//	    	fastLines = new FastCollinearPoints(p);
+//	    	StdOut.print("line segments:");
+//			for(LineSegment test : fastLines.segments())
+//			{
+//				StdOut.println(test);
+//			}
+        }  
         
     }
 }

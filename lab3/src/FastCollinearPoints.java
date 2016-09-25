@@ -50,7 +50,7 @@ class FastCollinearPoints
 		
 		for(int i = 0; i<pointNum; i++){	
 			/*set the reduant NA*/
-			for(int j = 0; j<=i; j++) slopes[j].slope = Double.POSITIVE_INFINITY; 
+			for(int j = 0; j<=i; j++) slopes[j].slope = Double.MAX_VALUE; 
 			
 			/*calculate the each point slopes with point i*/
 			for(int j = i+1; j<pointNum; j++){
@@ -61,6 +61,7 @@ class FastCollinearPoints
 			Arrays.sort(slopes);
 			/*find ajacent 3 points or more */
 			int ajacentNum = 0;
+			Point endP = null;
 			boolean startFlg = false;
 			for(int j = 0; j<pointNum-i-1;j++){
 				if(slopes[j].slope == slopes[j+1].slope){
@@ -72,11 +73,21 @@ class FastCollinearPoints
 				}
 				else if(startFlg == true){
 					startFlg = false;
-					Point endP  = slopes[j].p;
+					endP  = slopes[j].p;
 					for(int k = j-ajacentNum; k<j+1; k++){
 						if(slopes[k].p.compareTo(endP) > 0) endP = slopes[k].p;
 					}
 					
+				}
+				else if(j == pointNum-i-2 && slopes[j].slope == Double.POSITIVE_INFINITY ){
+					endP  = slopes[j].p;
+					for(int k = j-ajacentNum; k<j+1; k++){
+						if(slopes[k].p.compareTo(endP) > 0) endP = slopes[k].p;
+					}
+				}
+				
+				
+				if(endP != null){
 					boolean isDuplicate = false;
 					for(int l = 0; l<lineNum; l++)
 						if(endP == mylines[l].endian && slopes[j].slope == mylines[l].slope )
@@ -88,8 +99,9 @@ class FastCollinearPoints
 						mylines[lineNum++].slope = slopes[j].slope;
 					}
 					ajacentNum = 0;
+					endP = null;
 				}
-			}	
+			}
 		}
 	}
 	
